@@ -1,0 +1,6 @@
+@uit_learn_backend_HostAddress = http://localhost:5029
+
+GET {{uit_learn_backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
