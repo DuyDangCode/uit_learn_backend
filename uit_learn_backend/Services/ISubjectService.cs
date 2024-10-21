@@ -2,8 +2,8 @@
 
 namespace uit_learn_backend.Services
 {
-    public interface ISubjectsService
+    public interface ISubjectService
     {
-        Task<List<Subjects>> GetAllPublished();
+        Task<List<Subject>> GetAllPublished();
     }
 }

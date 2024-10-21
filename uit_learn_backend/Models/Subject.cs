@@ -2,7 +2,7 @@
 
 namespace uit_learn_backend.Models
 {
-    public class Subjects
+    public class Subject
     {
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]

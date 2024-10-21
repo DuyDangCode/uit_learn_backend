@@ -5,17 +5,17 @@ using uit_learn_backend.Services;
 namespace uit_learn_backend.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class SubjectsController : ControllerBase
+    [Route("/api/v1/subjects")]
+    public class SubjectController : ControllerBase
     {
-        private readonly ISubjectsService _subjectService;
-        public SubjectsController(ISubjectsService subjectsService)
+        private readonly ISubjectService _subjectService;
+        public SubjectController(ISubjectService subjectsService)
         {
             _subjectService = subjectsService;
         }
 
         [HttpGet("/")]
-        public async Task<List<Subjects>> GetSubjects()
+        public async Task<List<Subject>> GetSubjects()
         {
             return await _subjectService.GetAllPublished();
         }
