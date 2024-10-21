@@ -16,8 +16,11 @@ namespace uit_learn_backend.Models
         [BsonDefaultValue("")]
         public string? Description { get; set; }
 
-        [BsonElement("subject_is_published")]
+        [BsonElement("subject_code")]
+        [BsonRequired]
+        public string? Code { get; set; }
 
+        [BsonElement("subject_is_published")]
         [BsonDefaultValue(false)]
         public bool IsPublished { get; set; }
 
@@ -26,7 +29,12 @@ namespace uit_learn_backend.Models
         public bool IsDeleted { get; set; }
 
         [BsonElement("subject_thumb")]
+        [BsonRequired]
         public string? Thumb { get; set; }
+
+        [BsonElement("subject_image_code")]
+        [BsonRequired]
+        public string? ImageCode { get; set; }
 
         [BsonElement("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

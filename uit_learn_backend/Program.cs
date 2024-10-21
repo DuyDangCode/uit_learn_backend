@@ -14,10 +14,15 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 {
+    // init db
     builder.Services.AddSingleton<IMongoDbService, MongoDbService>();
     builder.Services.AddSingleton<ICloudinaryService, CloudinaryService>();
 
+    //add service
     builder.Services.AddScoped<ISubjectService, SubjectService>();
+
+    //add repo
+    builder.Services.AddScoped<IPhotoRepo, PhotoRepo>();
     builder.Services.AddScoped<ISubjectRepo, SubjectRepo>();
 }
 
