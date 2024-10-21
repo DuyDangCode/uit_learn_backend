@@ -1,6 +1,7 @@
 
 using uit_learn_backend.Config;
 using uit_learn_backend.Dbs;
+using uit_learn_backend.Repos;
 using uit_learn_backend.Services;
 
 namespace uit_learn_backend
@@ -13,9 +14,11 @@ namespace uit_learn_backend
             builder.Services.Configure<MongoDbConfig>(builder.Configuration.GetSection("MongoDb"));
 
             // Add services to the container.
-
-            builder.Services.AddSingleton<IMongoDbService, MongoDbService>();
-            builder.Services.AddSingleton<ISubjectService, SubjectService>();
+            {
+                builder.Services.AddSingleton<IMongoDbService, MongoDbService>();
+                builder.Services.AddSingleton<ISubjectService, SubjectService>();
+                builder.Services.AddSingleton<ISubjectRepo, SubjectRepo>();
+            }
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
