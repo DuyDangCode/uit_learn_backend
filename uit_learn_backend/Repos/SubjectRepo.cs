@@ -23,25 +23,25 @@ namespace uit_learn_backend.Repos
                 Builders<Subject>.Update.Set(item => item.IsDeleted, true));
         }
 
-        public async Task<List<Subject>> Find(bool isPublished = true, bool isDelete = false)
+        public async Task<List<Subject>> Find(int limit, int skip, bool isPublished = true, bool isDelete = false)
         {
             return await _subjectsCollection.Find(item => item.IsPublished == isPublished
-                                                          && item.IsDeleted == isDelete).ToListAsync();
+                                                          && item.IsDeleted == isDelete).Limit(limit).Skip(skip).ToListAsync();
         }
 
-        public async Task<List<Subject>> FindAll()
+        public async Task<List<Subject>> FindAll(int limit, int skip)
         {
             return await _subjectsCollection.Find(item => item.IsDeleted == false).ToListAsync();
         }
 
-        public async Task<List<Subject>> FindAllPublished()
+        public async Task<List<Subject>> FindAllPublished(int limit, int skip)
         {
-            return await Find(true);
+            return await Find(limit, skip, true);
         }
 
-        public async Task<List<Subject>> FindAllUnpublised()
+        public async Task<List<Subject>> FindAllUnpublised(int limit, int skip)
         {
-            return await Find(false);
+            return await Find(limit, skip, false);
         }
 
         public async Task<Subject> FindById(string id)

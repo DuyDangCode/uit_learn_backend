@@ -6,8 +6,8 @@ using uit_learn_backend.Services;
 namespace uit_learn_backend.Controllers
 {
 
-    [Route("api/v1/[controller]")]
     [ApiController]
+    [Route("api/v1/[controller]")]
     public class SubjectController : ControllerBase
     {
         private readonly ISubjectService _subjectService;
@@ -16,14 +16,14 @@ namespace uit_learn_backend.Controllers
             _subjectService = subjectsService;
         }
 
-        [HttpGet("/")]
-        public async Task<List<Subject>> GetSubjects()
+        [HttpGet]
+        public async Task<List<Subject>> GetSubjects([FromQuery(Name = "page")] int page = 1, [FromQuery(Name = "limit")] int limit = 10)
         {
-            return await _subjectService.GetAllPublished();
+            return await _subjectService.GetAllPublished(page, limit);
         }
 
-        [HttpPost("/")]
-        public async Task<IActionResult> CreateSubject(SubjectDto newSubject)
+        [HttpPost]
+        public async Task<IActionResult> CreateSubject([FromForm] SubjectDto newSubject)
         {
             return await _subjectService.Create(newSubject) ? Created() : BadRequest("Something wrong");
         }

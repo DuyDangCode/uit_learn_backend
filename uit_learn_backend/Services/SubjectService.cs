@@ -34,9 +34,10 @@ namespace uit_learn_backend.Services
             return true;
         }
 
-        public async Task<List<Subject>> GetAllPublished()
+        public async Task<List<Subject>> GetAllPublished(int page, int limit = 10)
         {
-            return await _subjectRepo.Find();
+            var skip = (page - 1) * limit;
+            return await _subjectRepo.FindAllPublished(limit, skip);
         }
     }
 }

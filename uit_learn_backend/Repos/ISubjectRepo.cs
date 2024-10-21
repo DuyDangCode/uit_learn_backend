@@ -4,10 +4,10 @@ namespace uit_learn_backend.Repos
 {
     public interface ISubjectRepo
     {
-        Task<List<Subject>> Find(bool isPublished = true, bool isDeleted = false);
-        Task<List<Subject>> FindAll();
-        Task<List<Subject>> FindAllPublished();
-        Task<List<Subject>> FindAllUnpublised();
+        Task<List<Subject>> Find(int limit, int skip, bool isPublished = true, bool isDeleted = false);
+        Task<List<Subject>> FindAll(int limit, int skip);
+        Task<List<Subject>> FindAllPublished(int limit, int skip);
+        Task<List<Subject>> FindAllUnpublised(int limit, int skip);
 
         Task Create(Subject subject);
         Task<Subject> FindById(string id);
