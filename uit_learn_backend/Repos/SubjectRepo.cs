@@ -12,9 +12,51 @@ namespace uit_learn_backend.Repos
             _subjectsCollection = mongoDbService.GetCollection<Subject>("subjects");
         }
 
-        public async Task<List<Subject>> Find()
+        public Task Create(Subject subject)
         {
-            return await _subjectsCollection.Find(s => true).ToListAsync();
+            return _subjectsCollection.InsertOneAsync(subject);
+        }
+
+        public async Task Delete(string id)
+        {
+            await _subjectsCollection.UpdateOneAsync(item => item.Id == id,
+                Builders<Subject>.Update.Set(item => item.IsDeleted, true));
+        }
+
+        public async Task<List<Subject>> Find(bool isPublished = true, bool isDelete = false)
+        {
+            return await _subjectsCollection.Find(item => item.IsPublished == isPublished
+                                                          && item.IsDeleted == isDelete).ToListAsync();
+        }
+
+        public async Task<List<Subject>> FindAll()
+        {
+            return await _subjectsCollection.Find(item => item.IsDeleted == false).ToListAsync();
+        }
+
+        public async Task<List<Subject>> FindAllPublished()
+        {
+            return await Find(true);
+        }
+
+        public async Task<List<Subject>> FindAllUnpublised()
+        {
+            return await Find(false);
+        }
+
+        public async Task<Subject> FindById(string id)
+        {
+            return await _subjectsCollection.Find(item => item.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<Subject> FindByName(string name)
+        {
+            return await _subjectsCollection.Find(item => item.Name == name).FirstOrDefaultAsync();
+        }
+
+        public async Task Update(string id, Subject subject)
+        {
+            await _subjectsCollection.ReplaceOneAsync(item => item.Id == id, subject);
         }
     }
 }
