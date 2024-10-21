@@ -1,19 +1,18 @@
-﻿using MongoDB.Driver;
-using uit_learn_backend.Dbs;
-using uit_learn_backend.Models;
+﻿using uit_learn_backend.Models;
+using uit_learn_backend.Repos;
 
 namespace uit_learn_backend.Services
 {
     public class SubjectService : ISubjectService
     {
-        private IMongoCollection<Subject> _subjectsCollection;
-        public SubjectService(IMongoDbService mongoDbService)
+        private readonly ISubjectRepo _subjectRepo;
+        public SubjectService(ISubjectRepo subjectRepo)
         {
-            _subjectsCollection = mongoDbService.GetCollection<Subject>("subjects");
+            _subjectRepo = subjectRepo;
         }
         public async Task<List<Subject>> GetAllPublished()
         {
-            return await _subjectsCollection.Find(_ => true).ToListAsync();
+            return await _subjectRepo.Find();
         }
     }
 }
