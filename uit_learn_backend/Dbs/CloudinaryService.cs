@@ -9,7 +9,7 @@ namespace uit_learn_backend.Dbs
         private readonly Cloudinary _cloudinary;
         public CloudinaryService(IOptions<CloudinaryConfig> config)
         {
-            _cloudinary = new Cloudinary(new Account(config.Value.CouldName,
+            _cloudinary = new Cloudinary(new Account(config.Value.CloudName,
                                                      config.Value.ApiKey,
                                                      config.Value.ApiSecret));
         }
