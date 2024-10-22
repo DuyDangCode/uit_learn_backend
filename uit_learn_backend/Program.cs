@@ -1,6 +1,6 @@
 
 using uit_learn_backend.Config;
-using uit_learn_backend.core;
+using uit_learn_backend.Core;
 using uit_learn_backend.Dbs;
 using uit_learn_backend.Repos;
 using uit_learn_backend.Services;

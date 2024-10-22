@@ -1,10 +1,10 @@
 ﻿using System.Net;
+using uit_learn_backend.Constant;
 
-namespace uit_learn_backend.core
+namespace uit_learn_backend.Core
 {
     public class CustomExceptMiddleware
     {
-        private const string ErrorMessage = "Something went wrong!!!";
         private readonly RequestDelegate _next;
         public CustomExceptMiddleware(RequestDelegate next)
         {
@@ -29,8 +29,8 @@ namespace uit_learn_backend.core
 
             await httpContext.Response.WriteAsync(new ErrorDetail()
             {
-                StatusCode = httpContext.Response.StatusCode,
-                Message = ErrorMessage
+                StatusCode = StatusCode.InternalServerError,
+                Message = MessageStatusCode.InternalServerError
             }.ToString());
         }
     }

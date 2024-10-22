@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace uit_learn_backend.core
+namespace uit_learn_backend.Core
 {
     public class ErrorDetail
     {
