@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using uit_learn_backend.core;
 using uit_learn_backend.Dtos;
 using uit_learn_backend.Models;
 using uit_learn_backend.Services;
@@ -31,7 +32,7 @@ namespace uit_learn_backend.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery(Name = "page")] int page = 1, [FromQuery(Name = "limit")] int limit = 10)
         {
-            return Ok(await _subjectService.GetAll(page, limit));
+            return Ok(new OkReponse<List<Subject>>("oke", await _subjectService.GetAll(page, limit)));
         }
 
         [HttpGet("{subjectId}")]
