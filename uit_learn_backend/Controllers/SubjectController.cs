@@ -16,10 +16,31 @@ namespace uit_learn_backend.Controllers
             _subjectService = subjectsService;
         }
 
-        [HttpGet]
-        public async Task<List<Subject>> GetSubjects([FromQuery(Name = "page")] int page = 1, [FromQuery(Name = "limit")] int limit = 10)
+        [HttpGet("all-unPublished")]
+        public async Task<IActionResult> GetAllPublished([FromQuery(Name = "page")] int page = 1, [FromQuery(Name = "limit")] int limit = 10)
         {
-            return await _subjectService.GetAllPublished(page, limit);
+            return Ok(await _subjectService.GetAllUnPublished(page, limit));
+        }
+
+        [HttpGet("all-published")]
+        public async Task<IActionResult> GetAllUnPublished([FromQuery(Name = "page")] int page = 1, [FromQuery(Name = "limit")] int limit = 10)
+        {
+            return Ok(await _subjectService.GetAllPublished(page, limit));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery(Name = "page")] int page = 1, [FromQuery(Name = "limit")] int limit = 10)
+        {
+            return Ok(await _subjectService.GetAll(page, limit));
+        }
+
+        [HttpGet("{subjectId}")]
+        public async Task<IActionResult> GetSubject([FromRoute] string subjectId)
+        {
+            Subject foundedSubject = await _subjectService.Get(subjectId);
+            if (foundedSubject == null)
+                return NotFound();
+            return Ok(foundedSubject);
         }
 
         [HttpPost]

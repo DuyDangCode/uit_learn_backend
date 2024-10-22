@@ -7,7 +7,7 @@ namespace uit_learn_backend.Repos
         Task<List<Subject>> Find(int limit, int skip, bool isPublished = true, bool isDeleted = false);
         Task<List<Subject>> FindAll(int limit, int skip);
         Task<List<Subject>> FindAllPublished(int limit, int skip);
-        Task<List<Subject>> FindAllUnpublised(int limit, int skip);
+        Task<List<Subject>> FindAllUnPublised(int limit, int skip);
 
         Task Create(Subject subject);
         Task<Subject> FindById(string id);

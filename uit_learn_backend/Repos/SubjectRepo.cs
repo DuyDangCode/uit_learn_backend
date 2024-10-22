@@ -39,7 +39,7 @@ namespace uit_learn_backend.Repos
             return await Find(limit, skip, true);
         }
 
-        public async Task<List<Subject>> FindAllUnpublised(int limit, int skip)
+        public async Task<List<Subject>> FindAllUnPublised(int limit, int skip)
         {
             return await Find(limit, skip, false);
         }
