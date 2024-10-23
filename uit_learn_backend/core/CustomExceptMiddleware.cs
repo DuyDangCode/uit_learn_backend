@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Diagnostics;
+using System.Net;
 using uit_learn_backend.Constant;
 
 namespace uit_learn_backend.Core
@@ -6,6 +7,7 @@ namespace uit_learn_backend.Core
     public class CustomExceptMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger? _logger;
         public CustomExceptMiddleware(RequestDelegate next)
         {
             _next = next;
@@ -14,10 +16,17 @@ namespace uit_learn_backend.Core
         {
             try
             {
+                //_logger.Log(LogLevel.Information,
+                //            "UIT_LEARN::Info::",
+                //            httpContext.Request.Path.Value,
+                //            httpContext.Request.Method,
+                //            httpContext.Request.QueryString.Value,
+                //            httpContext.Request.Headers["Authorization"]);
                 await _next(httpContext);
             }
             catch (Exception ex)
             {
+                Debug.WriteLine("\n\n\tError::" + ex.Message + "\n\n");
                 await HandleExceptionAsync(httpContext, ex);
             }
         }
