@@ -10,5 +10,6 @@ namespace uit_learn_backend.Services
         Task<List<Subject>> GetAll(int page, int limit = 10);
         Task<Subject> Get(string subjectId);
         Task<bool> Create(SubjectDto newSubject);
+        Task<bool> Update(string subjectId, SubjectDto newSubject);
     }
 }

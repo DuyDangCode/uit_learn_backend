@@ -17,18 +17,22 @@ namespace uit_learn_backend.Services
 
         public async Task<bool> Create(SubjectDto newSubject)
         {
-            IFormFile? image = newSubject.Image;
+            Subject foundSubject = await _subjectRepo.FindByCodeOrId(newSubject.Code, newSubject?.Id);
+            if (foundSubject != null) return false;
+
+            IFormFile? image = newSubject?.Image;
             ImageUploadResult uploadImageResult = await _photoRepo.Upload(image);
-            if (uploadImageResult.Error != null)
-            {
-                return false;
-            }
+            if (uploadImageResult.Error != null) return false;
+
             var subject = new Subject
             {
-                Name = newSubject.Name,
-                Description = newSubject.Description,
+                Id = newSubject?.Id,
+                Name = newSubject?.Name,
+                Description = newSubject?.Description,
                 Thumb = uploadImageResult.SecureUrl.AbsoluteUri,
                 ImageCode = uploadImageResult.PublicId,
+                Code = newSubject?.Code,
+                IsPublished = newSubject?.IsPublished ?? false
             };
             await _subjectRepo.Create(subject);
             return true;
@@ -55,6 +59,25 @@ namespace uit_learn_backend.Services
         {
             var skip = (page - 1) * limit;
             return _subjectRepo.FindAllUnPublised(limit, skip);
+        }
+
+        public async Task<bool> Update(string subjectId, SubjectDto newSubject)
+        {
+            Subject foundSubject = await _subjectRepo.FindById(subjectId);
+
+            if (foundSubject == null)
+                return false;
+            await _subjectRepo.Update(subjectId, new Subject
+            {
+                Name = newSubject.Name,
+                Description = newSubject.Description,
+                Thumb = foundSubject.Thumb,
+                ImageCode = foundSubject.ImageCode,
+                IsPublished = newSubject.IsPublished,
+                Code = newSubject.Code
+            }
+            );
+            return true;
         }
     }
 }

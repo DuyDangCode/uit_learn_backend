@@ -44,6 +44,16 @@ namespace uit_learn_backend.Repos
             return await Find(limit, skip, false);
         }
 
+        public async Task<Subject> FindByCode(string code)
+        {
+            return await _subjectsCollection.Find(item => item.Code == code).FirstOrDefaultAsync();
+        }
+
+        public async Task<Subject> FindByCodeOrId(string? code, string? id)
+        {
+            return await _subjectsCollection.Find(item => item.Code == code || item.Id == id).FirstOrDefaultAsync();
+        }
+
         public async Task<Subject> FindById(string id)
         {
             return await _subjectsCollection.Find(item => item.Id == id).FirstOrDefaultAsync();
