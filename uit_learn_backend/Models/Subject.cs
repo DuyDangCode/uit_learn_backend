@@ -22,11 +22,11 @@ namespace uit_learn_backend.Models
 
         [BsonElement("subject_is_published")]
         [BsonDefaultValue(false)]
-        public bool IsPublished { get; set; }
+        public bool? IsPublished { get; set; }
 
         [BsonElement("subject_is_deleted")]
         [BsonDefaultValue(false)]
-        public bool IsDeleted { get; set; }
+        public bool? IsDeleted { get; set; }
 
         [BsonElement("subject_thumb")]
         [BsonRequired]

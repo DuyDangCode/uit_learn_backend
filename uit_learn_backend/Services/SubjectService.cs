@@ -1,4 +1,5 @@
 ﻿using CloudinaryDotNet.Actions;
+using uit_learn_backend.Core;
 using uit_learn_backend.Dtos;
 using uit_learn_backend.Models;
 using uit_learn_backend.Repos;
@@ -15,14 +16,14 @@ namespace uit_learn_backend.Services
             _photoRepo = photoRepo;
         }
 
-        public async Task<bool> Create(SubjectDto newSubject)
+        public async Task<Result<object>> Create(SubjectDto newSubject)
         {
             Subject foundSubject = await _subjectRepo.FindByCodeOrId(newSubject.Code, newSubject?.Id);
-            if (foundSubject != null) return false;
+            if (foundSubject != null) return Result<object>.Error("Product is exist");
 
             IFormFile? image = newSubject?.Image;
             ImageUploadResult uploadImageResult = await _photoRepo.Upload(image);
-            if (uploadImageResult.Error != null) return false;
+            if (uploadImageResult.Error != null) return Result<object>.Error("Image update fail");
 
             var subject = new Subject
             {
@@ -35,12 +36,12 @@ namespace uit_learn_backend.Services
                 IsPublished = newSubject?.IsPublished ?? false
             };
             await _subjectRepo.Create(subject);
-            return true;
+            return Result<object>.Success(subject);
         }
 
-        public Task<Subject> Get(string subjectId)
+        public async Task<Result<Subject>> Get(string subjectId)
         {
-            return _subjectRepo.FindById(subjectId);
+            return Result<Subject>.Success(await _subjectRepo.FindById(subjectId));
         }
 
         public Task<List<Subject>> GetAll(int page, int limit = 10)
@@ -61,12 +62,12 @@ namespace uit_learn_backend.Services
             return _subjectRepo.FindAllUnPublised(limit, skip);
         }
 
-        public async Task<bool> Update(string subjectId, SubjectDto newSubject)
+        public async Task<Result<object>> Update(string subjectId, SubjectDto newSubject)
         {
             Subject foundSubject = await _subjectRepo.FindById(subjectId);
 
             if (foundSubject == null)
-                return false;
+                return Result<object>.Error("Subject not found");
             await _subjectRepo.Update(subjectId, new Subject
             {
                 Name = newSubject.Name,
@@ -77,7 +78,7 @@ namespace uit_learn_backend.Services
                 Code = newSubject.Code
             }
             );
-            return true;
+            return Result<object>.Success(newSubject);
         }
     }
 }

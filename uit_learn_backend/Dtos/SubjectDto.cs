@@ -28,7 +28,7 @@ namespace uit_learn_backend.Dtos
         public string? Code { get; set; }
 
         [DefaultValue(false)]
-        public bool IsPublished { get; set; }
+        public bool? IsPublished { get; set; }
 
         public string? Thumb { get; set; }
 
@@ -36,14 +36,14 @@ namespace uit_learn_backend.Dtos
         {
 
         }
-        public SubjectDto(Subject subject)
+        public SubjectDto(Subject? subject)
         {
-            Id = subject.Id;
-            Name = subject.Name;
-            Description = subject.Description;
-            Code = subject.Code;
-            Thumb = subject.Thumb;
-            IsPublished = subject.IsPublished;
+            Id = subject?.Id;
+            Name = subject?.Name;
+            Description = subject?.Description;
+            Code = subject?.Code;
+            Thumb = subject?.Thumb;
+            IsPublished = subject?.IsPublished;
         }
     }
 }

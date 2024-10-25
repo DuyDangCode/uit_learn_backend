@@ -9,12 +9,12 @@ using uit_learn_backend.Services;
 
 namespace uit_learn_backend.Controllers
 {
-
     [ApiController]
     [Route("api/v1/subjects")]
     public class SubjectController : ControllerBase
     {
         private readonly ISubjectService _subjectService;
+
         public SubjectController(ISubjectService subjectsService)
         {
             _subjectService = subjectsService;
@@ -50,28 +50,29 @@ namespace uit_learn_backend.Controllers
         [HttpGet("{subjectId}")]
         public async Task<IActionResult> GetSubject([FromRoute][IdString] string subjectId)
         {
-            Subject foundedSubject = await _subjectService.Get(subjectId);
-            if (foundedSubject == null)
-                return Ok(new NotFoundError(MessageStatusCode.NotFound(subjectId)));
-            return Ok(new OkResponse<SubjectDto>(MessageStatusCode.Get(subjectId), new SubjectDto(foundedSubject)));
+            Result<Subject> result = await _subjectService.Get(subjectId);
+            if (result.IsError)
+                return Ok(new NotFoundError(subjectId));
+            return Ok(new OkResponse<SubjectDto>(MessageStatusCode.Get(subjectId), new SubjectDto(result.Value)));
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateSubject([FromForm] SubjectDto newSubject)
         {
-            var status = await _subjectService.Create(newSubject);
-            return status ? Created("", new CreatedResponse<bool>(
+            Result<object> result = await _subjectService.Create(newSubject);
+            if (result.IsError)
+                BadRequest(new BadRequestError("Subject is exist"));
+            return Created("", new CreatedResponse<object?>(
                 "subject",
-                status))
-                : BadRequest(new BadRequestError("Subject is exist"));
+                result.Value));
         }
 
         [HttpPut("{subjectId}")]
         public async Task<IActionResult> UpdateSubject([FromForm][IdString] string subjectId)
         {
-            bool resultUpdate = await _subjectService.Update(subjectId, new SubjectDto());
-            return resultUpdate ? Ok(new OkResponse<bool>(MessageStatusCode.Update(subjectId),
-                                                          resultUpdate)) : Ok(new NotFoundError(MessageStatusCode.NotFound(subjectId)));
+            Result<object> resultUpdate = await _subjectService.Update(subjectId, new SubjectDto());
+            return !resultUpdate.IsError ? Ok(new OkResponse<bool>(MessageStatusCode.Update(subjectId),
+                                                          !resultUpdate.IsError)) : Ok(new NotFoundError(MessageStatusCode.NotFound(subjectId)));
         }
     }
 }
