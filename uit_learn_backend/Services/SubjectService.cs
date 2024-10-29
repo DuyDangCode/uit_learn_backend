@@ -18,7 +18,7 @@ namespace uit_learn_backend.Services
 
         public async Task<Result<object>> Create(SubjectDto newSubject)
         {
-            Subject foundSubject = await _subjectRepo.FindByCodeOrId(newSubject.Code, newSubject?.Id);
+            Subject foundSubject = await _subjectRepo.FindByCode(newSubject.Code);
             if (foundSubject != null) return Result<object>.Error("Product is exist");
 
             IFormFile? image = newSubject?.Image;
@@ -27,7 +27,6 @@ namespace uit_learn_backend.Services
 
             var subject = new Subject
             {
-                Id = newSubject?.Id,
                 Name = newSubject?.Name,
                 Description = newSubject?.Description,
                 Thumb = uploadImageResult.SecureUrl.AbsoluteUri,

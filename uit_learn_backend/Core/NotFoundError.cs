@@ -2,6 +2,6 @@
 {
     public class NotFoundError : ErrorDetail
     {
-        public NotFoundError(string name) : base(Constant.StatusCode.NotFound, Constant.MessageStatusCode.NotFound(name)) { }
+        public NotFoundError(string? name) : base(Constant.StatusCode.NotFound, Constant.MessageStatusCode.NotFound(name)) { }
     }
 }

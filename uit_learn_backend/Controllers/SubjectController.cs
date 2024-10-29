@@ -43,7 +43,7 @@ namespace uit_learn_backend.Controllers
             [FromQuery(Name = "page")][PagingInput] int page = 1,
             [FromQuery(Name = "limit")][PagingInput] int limit = 10)
         {
-            return Ok(new OkResponse<List<SubjectDto>>(MessageStatusCode.Get("all un-publised subject"),
+            return Ok(new OkResponse<List<SubjectDto>>(MessageStatusCode.Get("all un-published subject"),
                                                        (await _subjectService.GetAll(page, limit)).ConvertToSubjectDtoList()));
         }
 
@@ -52,7 +52,7 @@ namespace uit_learn_backend.Controllers
         {
             Result<Subject> result = await _subjectService.Get(subjectId);
             if (result.IsError)
-                return Ok(new NotFoundError(subjectId));
+                return NotFound(new NotFoundError(subjectId));
             return Ok(new OkResponse<SubjectDto>(MessageStatusCode.Get(subjectId), new SubjectDto(result.Value)));
         }
 
@@ -61,7 +61,7 @@ namespace uit_learn_backend.Controllers
         {
             Result<object> result = await _subjectService.Create(newSubject);
             if (result.IsError)
-                BadRequest(new BadRequestError("Subject is exist"));
+                BadRequest(new BadRequestError(result.ErrorMessage));
             return Created("", new CreatedResponse<object?>(
                 "subject",
                 result.Value));

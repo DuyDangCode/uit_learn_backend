@@ -21,10 +21,12 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
     //add service
     builder.Services.AddScoped<ISubjectService, SubjectService>();
+    builder.Services.AddScoped<ICourseService, CourseService>();
 
     //add repo
     builder.Services.AddScoped<IPhotoRepo, PhotoRepo>();
     builder.Services.AddScoped<ISubjectRepo, SubjectRepo>();
+    builder.Services.AddScoped<ICourseRepo, CourseRepo>();
 }
 
 builder.Services.AddControllers();
