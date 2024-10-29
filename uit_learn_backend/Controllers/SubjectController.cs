@@ -48,7 +48,7 @@ namespace uit_learn_backend.Controllers
         }
 
         [HttpGet("{subjectId}")]
-        public async Task<IActionResult> GetSubject([FromRoute][IdString] string subjectId)
+        public async Task<IActionResult> Get([FromRoute][IdString] string subjectId)
         {
             Result<Subject> result = await _subjectService.Get(subjectId);
             if (result.IsError)
@@ -57,7 +57,7 @@ namespace uit_learn_backend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateSubject([FromForm] SubjectDto newSubject)
+        public async Task<IActionResult> Create([FromForm] SubjectDto newSubject)
         {
             Result<object> result = await _subjectService.Create(newSubject);
             if (result.IsError)
@@ -68,11 +68,19 @@ namespace uit_learn_backend.Controllers
         }
 
         [HttpPut("{subjectId}")]
-        public async Task<IActionResult> UpdateSubject([FromForm][IdString] string subjectId)
+        public async Task<IActionResult> Update([FromForm][IdString] string subjectId)
         {
             Result<object> resultUpdate = await _subjectService.Update(subjectId, new SubjectDto());
             return !resultUpdate.IsError ? Ok(new OkResponse<bool>(MessageStatusCode.Update(subjectId),
                                                           !resultUpdate.IsError)) : Ok(new NotFoundError(MessageStatusCode.NotFound(subjectId)));
         }
+        [HttpDelete("{subjectId}")]
+        public async Task<IActionResult> Delete([FromForm][IdString] string subjectId)
+        {
+            Result<object> resultUpdate = await _subjectService.Update(subjectId, new SubjectDto());
+            return !resultUpdate.IsError ? Ok(new OkResponse<bool>(MessageStatusCode.Delete(subjectId),
+                                                          !resultUpdate.IsError)) : Ok(new NotFoundError(MessageStatusCode.NotFound(subjectId)));
+        }
+
     }
 }

@@ -38,6 +38,14 @@ namespace uit_learn_backend.Services
             return Result<object>.Success(subject);
         }
 
+        public async Task<Result<object>> Delete(string subjectId)
+        {
+            Subject foundSubject = await _subjectRepo.FindById(subjectId);
+            if (foundSubject == null) return Result<object>.Error(subjectId);
+            await _subjectRepo.Delete(subjectId);
+            return Result<object>.Success(foundSubject);
+        }
+
         public async Task<Result<Subject>> Get(string subjectId)
         {
             return Result<Subject>.Success(await _subjectRepo.FindById(subjectId));

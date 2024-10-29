@@ -12,5 +12,6 @@ namespace uit_learn_backend.Services
         Task<Result<Subject>> Get(string subjectId);
         Task<Result<object>> Create(SubjectDto newSubject);
         Task<Result<object>> Update(string subjectId, SubjectDto newSubject);
+        Task<Result<object>> Delete(string subjectId);
     }
 }

@@ -50,11 +50,11 @@ namespace uit_learn_backend.Controllers
                                                                    (await _courseService.GetAll(page, limit)).ConvertToCourseDtoList()));
         }
 
-        [HttpGet("{idCourse}")]
-        public async Task<IActionResult> GetOne([FromForm()] string idCourse)
+        [HttpGet("{courseId}")]
+        public async Task<IActionResult> GetOne([FromForm()] string courseId)
         {
-            Result<Course> result = await _courseService.Get(idCourse);
-            if (result.IsError) return NotFound(new NotFoundError(idCourse));
+            Result<Course> result = await _courseService.Get(courseId);
+            if (result.IsError) return NotFound(new NotFoundError(courseId));
 
             return Ok(new OkResponse<CourseDto>(MessageStatusCode.Get("all published course"),
                                                                    new CourseDto(result.Value)));
