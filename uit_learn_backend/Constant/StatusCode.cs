@@ -8,5 +8,6 @@
         public static int NotFound = 4004;
         public static int BadRequest = 4000;
         public static int InternalServerError = 5000;
+        public static int Exists = 4000;
     }
 }
