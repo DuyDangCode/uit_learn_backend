@@ -9,9 +9,10 @@ namespace uit_learn_backend.Services
         Task<List<Subject>> GetAllPublished(int page, int limit = 10);
         Task<List<Subject>> GetAllUnPublished(int page, int limit = 10);
         Task<List<Subject>> GetAll(int page, int limit = 10);
-        Task<Result<Subject>> Get(string subjectId);
+        Task<Result<Subject>> Get(string code);
         Task<Result<object>> Create(SubjectDto newSubject);
-        Task<Result<object>> Update(string subjectId, SubjectDto newSubject);
-        Task<Result<object>> Delete(string subjectId);
+        Task<Result<object>> Update(string code, SubjectDto newSubject);
+        Task<Result<object>> Delete(string code);
+        string CreateCode(SubjectDto subject, int numberOfChars = 3);
     }
 }

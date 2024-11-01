@@ -14,8 +14,8 @@ namespace uit_learn_backend.Repos
         Task<Course> FindByCode(string? code);
         Task<Course> FindByCodeOrId(string? code, string? id);
         Task<Course> FindByName(string name);
-        Task<bool> Delete(string id);
-        bool Update(string id, Course newCourse);
+        Task<bool> Delete(string code);
+        bool Update(string code, Course newCourse);
 
     }
 }

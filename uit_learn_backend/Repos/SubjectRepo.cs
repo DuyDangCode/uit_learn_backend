@@ -17,9 +17,9 @@ namespace uit_learn_backend.Repos
             return _subjectsCollection.InsertOneAsync(subject);
         }
 
-        public async Task Delete(string id)
+        public async Task Delete(string code)
         {
-            await _subjectsCollection.UpdateOneAsync(item => item.Id == id,
+            await _subjectsCollection.UpdateOneAsync(item => item.Code == code,
                 Builders<Subject>.Update.Set(item => item.IsDeleted, true));
         }
 
@@ -64,9 +64,9 @@ namespace uit_learn_backend.Repos
             return await _subjectsCollection.Find(item => item.Name == name).FirstOrDefaultAsync();
         }
 
-        public async Task Update(string id, Subject subject)
+        public async Task Update(string code, Subject subject)
         {
-            await _subjectsCollection.ReplaceOneAsync(item => item.Id == id, subject);
+            await _subjectsCollection.ReplaceOneAsync(item => item.Code == code, subject);
         }
     }
 }

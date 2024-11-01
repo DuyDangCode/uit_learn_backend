@@ -47,13 +47,13 @@ namespace uit_learn_backend.Controllers
                                                        (await _subjectService.GetAll(page, limit)).ConvertToSubjectDtoList()));
         }
 
-        [HttpGet("{subjectId}")]
-        public async Task<IActionResult> Get([FromRoute][IdString] string subjectId)
+        [HttpGet("{code}")]
+        public async Task<IActionResult> Get([FromRoute][Code] string code)
         {
-            Result<Subject> result = await _subjectService.Get(subjectId);
+            Result<Subject> result = await _subjectService.Get(code);
             if (result.IsError)
-                return NotFound(new NotFoundError(subjectId));
-            return Ok(new OkResponse<SubjectDto>(MessageStatusCode.Get(subjectId), new SubjectDto(result.Value)));
+                return NotFound(new NotFoundError(code));
+            return Ok(new OkResponse<SubjectDto>(MessageStatusCode.Get(code), new SubjectDto(result.Value)));
         }
 
         [HttpPost]
@@ -67,19 +67,19 @@ namespace uit_learn_backend.Controllers
                 result.Value));
         }
 
-        [HttpPut("{subjectId}")]
-        public async Task<IActionResult> Update([FromForm][IdString] string subjectId)
+        [HttpPut("{code}")]
+        public async Task<IActionResult> Update([FromForm][Code] string code)
         {
-            Result<object> resultUpdate = await _subjectService.Update(subjectId, new SubjectDto());
-            return !resultUpdate.IsError ? Ok(new OkResponse<bool>(MessageStatusCode.Update(subjectId),
-                                                          !resultUpdate.IsError)) : Ok(new NotFoundError(MessageStatusCode.NotFound(subjectId)));
+            Result<object> resultUpdate = await _subjectService.Update(code, new SubjectDto());
+            return !resultUpdate.IsError ? Ok(new OkResponse<bool>(MessageStatusCode.Update(code),
+                                                          !resultUpdate.IsError)) : Ok(new NotFoundError(MessageStatusCode.NotFound(code)));
         }
-        [HttpDelete("{subjectId}")]
-        public async Task<IActionResult> Delete([FromForm][IdString] string subjectId)
+        [HttpDelete("{code}")]
+        public async Task<IActionResult> Delete([FromForm][Code] string code)
         {
-            Result<object> resultUpdate = await _subjectService.Update(subjectId, new SubjectDto());
-            return !resultUpdate.IsError ? Ok(new OkResponse<bool>(MessageStatusCode.Delete(subjectId),
-                                                          !resultUpdate.IsError)) : Ok(new NotFoundError(MessageStatusCode.NotFound(subjectId)));
+            Result<object> resultUpdate = await _subjectService.Update(code, new SubjectDto());
+            return !resultUpdate.IsError ? Ok(new OkResponse<bool>(MessageStatusCode.Delete(code),
+                                                          !resultUpdate.IsError)) : Ok(new NotFoundError(MessageStatusCode.NotFound(code)));
         }
 
     }

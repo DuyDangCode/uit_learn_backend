@@ -14,7 +14,7 @@ namespace uit_learn_backend.Repos
         Task<Subject> FindByCode(string code);
         Task<Subject> FindByCodeOrId(string? code, string? id);
         Task<Subject> FindByName(string name);
-        Task Delete(string id);
-        Task Update(string id, Subject subject);
+        Task Delete(string code);
+        Task Update(string code, Subject subject);
     }
 }

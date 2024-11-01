@@ -1,4 +1,5 @@
 ﻿using CloudinaryDotNet.Actions;
+using System.Text;
 using uit_learn_backend.Core;
 using uit_learn_backend.Dtos;
 using uit_learn_backend.Models;
@@ -18,12 +19,33 @@ namespace uit_learn_backend.Services
 
         public async Task<Result<object>> Create(SubjectDto newSubject)
         {
-            Subject foundSubject = await _subjectRepo.FindByCode(newSubject.Code);
-            if (foundSubject != null) return Result<object>.Error("Product is exist");
+            var codeSubject = newSubject.Code;
+            if (string.IsNullOrEmpty(codeSubject))
+            {
+                var i = 5;
+                var numberOfChars = 3;
+                do
+                {
+                    if (i == 0)
+                    {
+                        numberOfChars++;
+                        i = 5;
+                    }
+                    if (numberOfChars > 10) throw new Exception("Cant create code");
+                    codeSubject = CreateCode(newSubject, numberOfChars);
+                    i--;
+                } while (await _subjectRepo.FindByCode(codeSubject) is not null);
+
+            }
+            else
+            {
+                Subject foundSubject = await _subjectRepo.FindByCode(codeSubject);
+                if (foundSubject is not null) return Result<object>.Error("Product is exist");
+            }
 
             IFormFile? image = newSubject?.Image;
             ImageUploadResult uploadImageResult = await _photoRepo.Upload(image);
-            if (uploadImageResult.Error != null) return Result<object>.Error("Image update fail");
+            if (uploadImageResult.Error is not null) return Result<object>.Error("Image update fail");
 
             var subject = new Subject
             {
@@ -31,24 +53,43 @@ namespace uit_learn_backend.Services
                 Description = newSubject?.Description,
                 Thumb = uploadImageResult.SecureUrl.AbsoluteUri,
                 ImageCode = uploadImageResult.PublicId,
-                Code = newSubject?.Code,
+                Code = codeSubject,
                 IsPublished = newSubject?.IsPublished ?? false
             };
             await _subjectRepo.Create(subject);
             return Result<object>.Success(subject);
         }
 
-        public async Task<Result<object>> Delete(string subjectId)
+        public string CreateCode(SubjectDto subject, int numberOfChars = 3)
         {
-            Subject foundSubject = await _subjectRepo.FindById(subjectId);
-            if (foundSubject == null) return Result<object>.Error(subjectId);
-            await _subjectRepo.Delete(subjectId);
+            var stringBuilder = new StringBuilder();
+            var words = subject.Name?.Split(" ");
+
+            for (int i = 0; i < words?.Length; i++)
+            {
+                string? word = words[i];
+                stringBuilder.Append(word[0]);
+            }
+
+            var ran = new Random();
+            for (var i = 0; i < numberOfChars; i++)
+            {
+                stringBuilder.Append((char)ran.Next(48, 57));
+            }
+            return stringBuilder.ToString();
+        }
+
+        public async Task<Result<object>> Delete(string code)
+        {
+            Subject foundSubject = await _subjectRepo.FindByCode(code);
+            if (foundSubject == null) return Result<object>.Error(code);
+            await _subjectRepo.Delete(code);
             return Result<object>.Success(foundSubject);
         }
 
-        public async Task<Result<Subject>> Get(string subjectId)
+        public async Task<Result<Subject>> Get(string code)
         {
-            return Result<Subject>.Success(await _subjectRepo.FindById(subjectId));
+            return Result<Subject>.Success(await _subjectRepo.FindByCode(code));
         }
 
         public Task<List<Subject>> GetAll(int page, int limit = 10)
@@ -69,13 +110,13 @@ namespace uit_learn_backend.Services
             return _subjectRepo.FindAllUnPublised(limit, skip);
         }
 
-        public async Task<Result<object>> Update(string subjectId, SubjectDto newSubject)
+        public async Task<Result<object>> Update(string code, SubjectDto newSubject)
         {
-            Subject foundSubject = await _subjectRepo.FindById(subjectId);
+            Subject foundSubject = await _subjectRepo.FindByCode(code);
 
             if (foundSubject == null)
                 return Result<object>.Error("Subject not found");
-            await _subjectRepo.Update(subjectId, new Subject
+            await _subjectRepo.Update(code, new Subject
             {
                 Name = newSubject.Name,
                 Description = newSubject.Description,

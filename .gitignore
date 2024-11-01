@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/uit_learn_backend/appsettings.Production.json
+/uit_learn_backend/appsettings.Development.json
+/uit_learn_backend/appsettings.Development.json
+/uit_learn_backend/appsettings.Development.json
