@@ -19,9 +19,9 @@ namespace uit_learn_backend.Repos
             return _courseCollection.InsertOneAsync(newCourse);
         }
 
-        public async Task<bool> Delete(string id)
+        public async Task<bool> Delete(string code)
         {
-            var filter = Builders<Course>.Filter.Eq(course => course.Id, id);
+            var filter = Builders<Course>.Filter.Eq(course => course.Code, code);
             var update = Builders<Course>.Update.Set("course_is_deleted", true);
             var result = await _courseCollection.UpdateOneAsync(filter, update);
             return result.IsAcknowledged && result.ModifiedCount > 0;
@@ -73,10 +73,10 @@ namespace uit_learn_backend.Repos
             return _courseCollection.Find(course => course.Name == name).FirstOrDefaultAsync();
         }
 
-        public bool Update(string id, Course newCourse)
+        public bool Update(string code, Course newCourse)
         {
 
-            var result = _courseCollection.ReplaceOneAsync(course => course.Id == id, newCourse).Result;
+            var result = _courseCollection.ReplaceOneAsync(course => course.Code == code, newCourse).Result;
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
     }

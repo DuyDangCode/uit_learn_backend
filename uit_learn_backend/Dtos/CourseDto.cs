@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 using uit_learn_backend.Attributes;
 using uit_learn_backend.Models;
 
@@ -7,12 +6,8 @@ namespace uit_learn_backend.Dtos
 {
     public class CourseDto
     {
-        [IdString]
-        [AllowNull]
-        public string? Id { get; set; }
 
-        [Required]
-        [StringLength(50, MinimumLength = 1)]
+        [Code]
         public string? Code { get; set; }
 
         [Required]
@@ -27,14 +22,13 @@ namespace uit_learn_backend.Dtos
 
         public string? Thumb { get; set; }
 
-        [Required]
         public DateTime? DateCreated
         { get; set; } = DateTime.UtcNow;
 
         public DateTime? DateUpdated { get; set; } = DateTime.UtcNow;
 
         [Required]
-        public string? SubjectId { get; set; }
+        public string? SubjectCode { get; set; }
 
         public CourseDto()
         {
@@ -42,7 +36,6 @@ namespace uit_learn_backend.Dtos
 
         public CourseDto(Course? course)
         {
-            Id = course?.Id;
             Name = course?.Name;
             Description = course?.Description;
             Code = course?.Code;
@@ -50,7 +43,7 @@ namespace uit_learn_backend.Dtos
             Thumb = course?.Thumb;
             DateCreated = course?.CreatedAt;
             DateUpdated = course?.UpdatedAt;
-            SubjectId = course?.SubjectId;
+            SubjectCode = course?.SubjectCode;
         }
     }
 }

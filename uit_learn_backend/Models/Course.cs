@@ -31,9 +31,9 @@ namespace uit_learn_backend.Models
         [BsonRequired]
         public string? Code { get; set; }
 
-        [BsonElement("subject_id")]
+        [BsonElement("subject_code")]
         [BsonRequired]
-        public string? SubjectId { get; set; }
+        public string? SubjectCode { get; set; }
 
         [BsonElement("course_image_code")]
         public string? ImageCode { get; set; }
@@ -49,7 +49,7 @@ namespace uit_learn_backend.Models
 
         }
 
-        public Course(string? id, string? name, string? description, string? thumb, bool isDeleted, bool isPublished, string? code, string? subjectId, DateTime createdAt, DateTime updatedAt)
+        public Course(string? id, string? name, string? description, string? thumb, bool isDeleted, bool isPublished, string? code, string? subjectCode, DateTime createdAt, DateTime updatedAt)
         {
             Id = id;
             Name = name;
@@ -58,7 +58,7 @@ namespace uit_learn_backend.Models
             IsDeleted = isDeleted;
             IsPublished = isPublished;
             Code = code;
-            SubjectId = subjectId;
+            SubjectCode = subjectCode;
             CreatedAt = createdAt;
             UpdatedAt = updatedAt;
         }
@@ -68,7 +68,7 @@ namespace uit_learn_backend.Models
             Name = courseDto.Name;
             Description = courseDto.Description;
             Code = courseDto.Code;
-            SubjectId = courseDto.SubjectId;
+            SubjectCode = courseDto.SubjectCode;
         }
     }
 }
